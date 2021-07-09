@@ -78,5 +78,3 @@ import Notifier from "./notify"
   actionHandler(bot, downloader, log.extend("actionHandler"))
 
   await bot.launch()
-  console.log("bot launched")
-})
