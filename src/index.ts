@@ -6,7 +6,7 @@ import { Telegraf } from "telegraf"
 import got from "got"
 
 import setup from "./setup"
-import { AUDIO_VIDEO_KEYBOARD, YOUTUBE_REGEX, TIKTOK_REGEX } from "./constants"
+import { AUDIO_VIDEO_KEYBOARD, YOUTUBE_REGEX } from "./constants"
 import strings from "./strings"
 import Downloader from "./downloader"
 import actionHandler from "./actionHandler"
@@ -49,12 +49,6 @@ import Notifier from "./notify"
       return next()
     }
 
-    const tiktok = TIKTOK_REGEX.test(text)
-    if (tiktok) {
-      ctx.tiktok = text
-      if (ctx.tiktok) return next()
-    }
-
     if (ctx.chat.type !== "private") return
 
     notifier.unsupported(messageLog)
@@ -80,37 +74,6 @@ import Notifier from "./notify"
         ctx.reply(strings.error(), { disable_web_page_preview: true })
       }
     }
-
-    if (ctx.tiktok) {
-      const reply = await ctx.replyWithHTML(strings.downloading("from tiktok"))
-
-      try {
-        const download = await downloader.any(ctx.tiktok)
-        const format = download.formats[0]
-        const description = removeHashtags(download.description)
-        const filename = filenameify(description)
-
-        if (!format) throw Error("no downloadable format found")
-
-        const source = got.stream(format.url, {
-          headers: { ...format.http_headers },
-        })
-
-        const file = { source, filename }
-        ctx.replyWithVideo(file, {
-          caption: description,
-          reply_to_message_id: ctx.message.message_id,
-          supports_streaming: true,
-        })
-      } catch (error) {
-        log(error)
-        notifier.error(error)
-        ctx.reply(strings.error(), { disable_web_page_preview: true })
-      } finally {
-        bot.telegram.deleteMessage(reply.chat.id, reply.message_id)
-      }
-    }
-  })
 
   actionHandler(bot, downloader, log.extend("actionHandler"))
 
