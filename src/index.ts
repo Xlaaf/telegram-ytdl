@@ -79,4 +79,4 @@ import Notifier from "./notify"
 
   await bot.launch()
   console.log("bot launched")
-})()
+})
