@@ -4,26 +4,21 @@ import { bold } from "./util"
 
 const strings = {
   start: (name: string) =>
-    `hello ${name}\n\njust send me a ${bold("youtube")} link ` +
-    `and i'll give you the choice of downloading it as video or audio.\n` +
-    `tiktok is also supported, even for videos that have download disabled.`,
+    `Halo ${name}\nSilahkan Kirim Link ${bold("youtube")} link `,
 
-  startDescription: () => `send the welcome message again`,
+  startDescription: () => `kirim pesan start lagi`,
 
-  unsupported: () => `sorry, i don't know how to download that yet.`,
+  unsupported: () => `maaf, aku belum tahu cara mengunduhnya.`,
 
   formatSelection: (video?: string) =>
-    `download${video ? " " + bold(video) : ""} as audio or video?`,
+    `download${video ? " " + bold(video) : ""} Mau dijadikan mp3 atau MP4?`,
 
-  downloading: (add?: string) => `downloading${add ? " " + add : ""}...`,
+  downloading: (add?: string) => `Mendownload${add ? " " + add : ""}...`,
 
-  error: (add?: string) => `sorry, something went wrong.` + (add ? "\n\n" + add : ""),
+  error: (add?: string) => `sepertinya ada yang salah.` + (add ? "\n\n" + add : ""),
 
   overSize: (type: string, url: string) =>
-    `unfortunately, telegram bots can only upload files up to 50MB, and your ${type} is larger than that.\n` +
-    `please visit the link and ${bold("long-press")} or ${bold("right-click")} ` +
-    `and select ${bold("download")} or ${bold("save as")}\n\n` +
-    `${url}`,
+    `sayangnya, bot telegram hanya dapat mengunggah file hingga 50 MB, dan ${type} Anda lebih besar dari itu.\n`,
 }
 
 export default strings
